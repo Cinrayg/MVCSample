@@ -1,0 +1,29 @@
+﻿@model List<EliasModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    
+<table class="centered">
+    <tr>
+        <td>Username</td>
+        <td>@Html.TextBox("Username", null, new { @class = "pure-material-textfield-standard" })</td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td>@Html.Password("Password", null, new { @class = "pure-material-textfield-standard" })</td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: right;">
+            <button class="pure-material-button-contained small-min-width">Login</button>
+        </td>
+    </tr>
+</table>
+
+}
+<br />
+<div class="centered">
+    Need an acount? <a onclick="location.href='@Url.Action("Register", "Home")'">Register</a>
+</div>

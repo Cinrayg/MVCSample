@@ -1,0 +1,33 @@
+﻿@model List<EliasModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+{
+    
+<table class="centered">
+    <tr>
+        <td>Username</td>
+        <td id="UsernameWrapper">@Html.TextBox("Username", null, new { @class = "pure-material-textfield-standard", @onchange="validateRegistration()" })</td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td id="PasswordWrapper">@Html.Password("Password", null, new { @class = "pure-material-textfield-standard", @onchange="validateRegistration()" })</td>
+    </tr>
+    <tr>
+        <td>Confirm Password</td>
+        <td id="ConfirmPasswordWrapper">@Html.Password("ConfirmPassword", null, new { @class = "pure-material-textfield-standard", @onchange="validateRegistration()" })</td>
+    </tr>
+    @if (ViewData["ErrorMessage"] != null) {
+        <tr>
+            <td colspan="2" class="centered invalid" style="padding:8px;">@ViewData["ErrorMessage"].ToString()</td>
+        </tr>
+    }
+    <tr>
+        <td><button id="saveButton" class="pure-material-button-contained small-min-width" disabled>Register</button></td>
+        <td style="text-align: right;"><a class="pure-material-button-contained" onclick="location.href='@Url.Action("Index", "Home")'">Cancel</a></td>
+    </tr>
+</table>
+
+}

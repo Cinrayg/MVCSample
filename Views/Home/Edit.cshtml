@@ -1,0 +1,42 @@
+﻿@model EliasModel
+@{
+    ViewData["Title"] = "Edit Page";
+}
+
+@using (Html.BeginForm("Edit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.Hidden("Id")
+    @Html.Hidden("ParentId")
+
+    <table class="centered">
+        <tr>
+            <td>Name</td>
+            <td id="NameWrapper">@Html.TextBox("Name", null, new { @class = "pure-material-textfield-standard", @maxlength="50", @onchange="validateEdit()" })</td>
+        </tr>
+        <tr>
+            <td>Type</td>
+            <td>@Html.DropDownList("TypeId", new SelectList((List<EliasTypeModel>)ViewData["CustomItemTypes"], "Id", "Name", Model.TypeId), null, new { @class = "select-text" } )</td>
+        </tr>
+        <tr>
+            <td>Image</td>
+            <td id="ImageWrapper">
+                <input asp-for="Image" type="file" onchange="validateEdit()">
+            </td>
+        </tr>
+        <tr>
+            <td><button id="saveButton" class="pure-material-button-contained" disabled>Save</button></td>
+            <td style="text-align: right;">@Html.ActionLink("Cancel", "List", "Home", null, new { @class = "pure-material-button-contained" } )</td>
+        </tr>
+    </table>
+
+}
+
+@section Scripts
+{
+   <script type="text/javascript">
+        if  (!this.isNew()) {
+            this.enableSave();
+        }
+   </script>
+}

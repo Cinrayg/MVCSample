@@ -1,0 +1,70 @@
+﻿@model List<EliasModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using (Html.BeginForm("List", "Home", FormMethod.Get))
+{
+    
+<table class="centered">
+    <tr class="header">
+        <td><a class="pure-material-button-contained" onclick="location.href='@Url.Action("Edit", "Home")'">New</a></td>
+        <td></td>
+        <td>            
+            Name
+            @Html.TextBox("Filter", null, new { @class = "pure-material-textfield-standard" })
+            <button class="pure-material-button-contained small-min-width">Filter</button>
+        </td>
+        <td>Type</td>
+        <td>Image</td>
+        <td>Parent</td>
+    </tr>
+    @foreach (EliasModel item in Model)
+    {
+        <tr>
+            <td><a class="pure-material-button-contained" onclick="location.href='@Url.Action("Edit", "Home", new { customItemId = item.Id })'">Edit</a></td>
+            <td><a class="pure-material-button-contained" onclick="location.href='@Url.Action("List", "Home", new { customItemId = item.Id })'">Delete</a></td>
+            <td>@item.Name</td>
+            <td>@item.Type</td>
+            <td>
+                @if (item.ImageArray != null) {
+                    var base64 = Convert.ToBase64String(item.ImageArray);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                    <img src="@imgSrc" class="uploadedImage" />
+                }
+            </td>
+            <td>
+                @if (item.ParentId == null) {
+                    <a class="pure-material-button-contained" onclick="location.href='@Url.Action("Edit", "Home", new { parentId = item.Id })'">New Child</a>
+                } else {
+                    @item.ParentName
+                }
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="6">
+            <table>
+                <tr>
+                    <td><a class="pure-material-button-contained small-min-width" onclick="location.href='@Url.Action("List", "Home", new { page = 0, filter = ViewData["filter"] })'">1</a></td>
+                    @if ((int)ViewData["PageStart"] > 1) {
+                        <td>...</td>    
+                    }
+                    @for (int i = (int)ViewData["PageStart"]; i < (int)ViewData["PageEnd"]; i++)
+                    {
+                        <td><a class="pure-material-button-contained small-min-width" onclick="location.href='@Url.Action("List", "Home", new { page = i, filter = ViewData["filter"] })'">@(i + 1)</a></td>
+                    }
+                    @if ((int)ViewData["PageEnd"] < ((int)ViewData["CustomItemCount"] - 1) / 10) {
+                        <td>...</td>    
+                    }
+                    @if ((int)ViewData["CustomItemCount"] > 10) {
+                    <td><a class="pure-material-button-contained small-min-width" onclick="location.href='@Url.Action("List", "Home", new { page = Math.Round(((int)ViewData["CustomItemCount"] - 1) / 10f, 0, MidpointRounding.ToZero), filter = ViewData["filter"] })'">@(Math.Round(((int)ViewData["CustomItemCount"] - 1) / 10f, 0, MidpointRounding.ToZero) + 1)</a></td>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+}
